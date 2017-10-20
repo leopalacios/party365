@@ -1,19 +1,18 @@
 <template>
   <form>
     <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--8-col">
-        <div class="card-image__picture">
-          <img :src="this.catUrl"/>
-        </div>
-      </div>
       <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded is-dirty">
-          <input id="username" v-model="title" type="text" class="mdl-textfield__input"/>
-          <label for="username" class="mdl-textfield__label">Describe me</label>
+          <input id="nameField" v-model="name" type="text" class="mdl-textfield__input"/>
+          <label for="nameField" class="mdl-textfield__label">Add a name</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded is-dirty">
+          <input id="descriptionField" v-model="description" type="text" class="mdl-textfield__input"/>
+          <label for="descriptionField" class="mdl-textfield__label">Add a description</label>
         </div>
         <div class="actions">
-          <a @click.prevent="postCat" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-            POST A CAT
+          <a @click.prevent="postPlace" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            SUBMIT A NEW PLACE
           </a>
         </div>
       </div>
@@ -22,20 +21,13 @@
 </template>
 
 <script>
-import parse from 'xml-parser'
 export default {
-  props: ['title', 'catUrl'],
-  mounted () {
-    this.$http.get('http://thecatapi.com/api/images/get?format=xml&results_per_page=1').then(response => {
-      this.catUrl = parse(response.body).root.children['0'].children['0'].children['0'].children['0'].content
-    })
-  },
+  props: ['name', 'description'],
   methods: {
-    postCat () {
-      this.$root.$firebaseRefs.cat.push({
-        'url': this.catUrl,
-        'comment': this.title,
-        'info': 'Posted by Charles on Tuesday',
+    postPlace () {
+      this.$root.$firebaseRefs.places.push({
+        'name': this.name,
+        'description': this.description,
         'created_at': -1 * new Date().getTime()
       })
       .then(this.$router.push('/'))

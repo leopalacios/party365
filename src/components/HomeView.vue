@@ -3,12 +3,9 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-        <div v-for="picture in getCats()" class="image-card" @click="displayDetails(picture['.key'])">
-          <div class="image-card__picture">
-            <img :src="picture.url" />
-          </div>
+        <div v-for="item in getPlaces()" class="image-card" @click="displayDetails(item['.key'])">
           <div class="image-card__comment mdl-card__actions">
-            <span>{{ picture.comment }}</span>
+            <span>{{ item.name }}</span>
           </div>
         </div>
       </div>
@@ -24,22 +21,22 @@ export default {
     displayDetails (id) {
       this.$router.push({name: 'detail', params: { id: id }})
     },
-    getCats () {
+    getPlaces () {
       if (navigator.onLine) {
-        this.saveCatsToCache()
-        return this.$root.cat
+        this.savePlacesToCache()
+        return this.$root.places
       } else {
-        return JSON.parse(localStorage.getItem('cats'))
+        return JSON.parse(localStorage.getItem('places'))
       }
     },
-    saveCatsToCache () {
-      this.$root.$firebaseRefs.cat.once('value', (snapchot) => {
-        localStorage.setItem('cats', JSON.stringify(snapchot.val()))
+    savePlacesToCache () {
+      this.$root.$firebaseRefs.places.once('value', (snapshot) => {
+        localStorage.setItem('places', JSON.stringify(snapshot.val()))
       })
     }
   },
   mounted () {
-    this.saveCatsToCache()
+    this.savePlacesToCache()
   }
 }
 </script>

@@ -1,6 +1,7 @@
 {
   "name": "party365",
   "short_name": "party365",
+  "description": "An app to find cool places at night",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",
@@ -13,6 +14,7 @@
       "type": "image/png"
     }
   ],
+  "orientation": "portrait",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000000",
